@@ -22,6 +22,9 @@ class Pipeline:
 		self.rescale_queue = Queue()
 		self.prediction_queue = Queue()
 		self.write_queue = Queue()
+
+		self.no_more = False
+
 	
 	@jit
 	def read_video(self, video_url, destination_url):
@@ -35,12 +38,11 @@ class Pipeline:
 			print('Read a new frame: ', succes, f"{count}/{totalframecount}")
 			count += 1
 
-	@jit
 	def read_images(self, dir):
 		source = "./Frames/"
 		print('Reading files...')
 
-		batch_size = 300
+		batch_size = 100
 		
 		for root, dirs, files in walk(dir):
 			print(len(files))
@@ -59,7 +61,8 @@ class Pipeline:
 
 			self.rescale_queue.put(images)
 
-	@jit
+		self.no_more = True
+
 	def rescale(self):
 		while True:
 			if self.rescale_queue.empty():
@@ -77,7 +80,6 @@ class Pipeline:
 
 			self.prediction_queue.put([task, new_files])
 
-	@jit
 	def predict(self):
 		while True:
 			if self.prediction_queue.empty():
@@ -96,19 +98,26 @@ class Pipeline:
 			
 			self.write_queue.put([original_images, new_predictions])
 
-	@jit
 	def write_image(self):
 		w = 2704
 		h = 1520
 		fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
-		writer = cv2.VideoWriter("written.mp4", fourcc, 60, (w, h))
+		writer = cv2.VideoWriter("written.mp4", fourcc, 60, (w,h))
+
+		self.stop_running = True
+		self.empty = True
 
 		while True:
 			if self.write_queue.empty():
+				if self.empty == False and self.no_more == True:
+					break
 				continue
+			self.empty = False
+
 
 			task = self.write_queue.get()
 			images = task[0]
+			print(len(images))
 			predictions = task[1]
 			for index in tqdm(range(len(predictions)), desc="image writer"):
 				image = images[index]
@@ -117,16 +126,22 @@ class Pipeline:
 				color = (0,255,0) if prediction == 1 else (0,0,255)
 
 				cv2.putText(image, text, (50, 50), cv2.FONT_HERSHEY_SIMPLEX,1, color, 2, cv2.LINE_4)
+
+				# cv2.imshow('frame', image)
+				# cv2.waitKey(0)
 				writer.write(image)
 
 
 if __name__ == "__main__":
-	os.remove("written.mp4")
+	try:
+		os.remove("written.mp4")
+	except:
+		print('destination file doesnt exist, moving on')
 	pl = Pipeline()
-	# pl.read_video('Sequence 01.mp4', 'Frames/')
+	pl.read_video('Sequence 01.mp4', 'Frames/')
 	threading.Thread(target=pl.rescale, daemon=True).start()
 	threading.Thread(target=pl.predict, daemon=True).start()
-	threading.Thread(target=pl.write_image, daemon=True).start()
+	threading.Thread(target=pl.write_image, daemon=False).start()
 	files = pl.read_images('./Frames/')
 # rescaled = pl.rescale(files)
 
