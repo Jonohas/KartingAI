@@ -1,2 +1,6 @@
-Source/Frames/*
-Source/Videos/*
+output/
+Source/
+logs/
+.env
+
+temp.json
