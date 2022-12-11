@@ -31,9 +31,9 @@ workspace_name = os.environ.get('WORKSPACE', 'mlops-jonasfaber-karting')
 subscription_id = os.environ.get('SUBSCRIPTION_ID', '7c50f9c3-289b-4ae0-a075-08784b3b9042')
 resource_group = os.environ.get('RESOURCE_GROUP', 'NathanReserve')
 
-LABELS = os.environ.get('LABELS').split(',')
-SEED = int(os.environ.get('RANDOM_SEED'))
-TRAIN_TEST_SPLIT_FACTOR = float(os.environ.get('TRAIN_TEST_SPLIT_FACTOR'))
+LABELS = os.environ.get('LABELS', 'finish,notfinish').split(',')
+SEED = int(os.environ.get('RANDOM_SEED', '42'))
+TRAIN_TEST_SPLIT_FACTOR = float(os.environ.get('TRAIN_TEST_SPLIT_FACTOR', '0.2'))
 
 # Connect to workspace
 ws = Workspace.get(name=workspace_name,
@@ -44,7 +44,8 @@ ws = Workspace.get(name=workspace_name,
 import tempfile
 
 def processAndUploadAnimalImages(datasets, data_path, processed_path, ws, label):
-    label_path = os.path.join(data_path, 'animals', label)
+    label_path = os.path.join(data_path, 'karting', label)
+    os.makedirs(label_path, exist_ok=True)
 
     # Get the dataset name for this animal, then download to the directory
     datasets[label].download(label_path, overwrite=True) # Overwriting means we don't have to delete if they already exist, in case something goes wrong.
@@ -128,7 +129,7 @@ def trainTestSplitData(ws):
     testing_dataset = Dataset.File.from_files(path=testing_datapaths)
 
     training_dataset = training_dataset.register(ws,
-        name=os.environ.get('TRAIN_SET_NAME'), # Get from the environment
+        name=os.environ.get('TRAIN_SET_NAME', 'karting-training-set'), # Get from the environment
         description=f'The Animal Images to train, resized tot 254, 144',
         tags={'labels': os.environ.get('LABELS'), 'AI-Model': 'vgg19', 'Split size': str(1 - TRAIN_TEST_SPLIT_FACTOR), 'type': 'training', 'GIT-SHA': os.environ.get('GIT_SHA')},
         create_new_version=True)
@@ -136,7 +137,7 @@ def trainTestSplitData(ws):
     print(f"Training dataset registered: {training_dataset.id} -- {training_dataset.version}")
 
     testing_dataset = testing_dataset.register(ws,
-        name=os.environ.get('TEST_SET_NAME'), # Get from the environment
+        name=os.environ.get('TEST_SET_NAME', 'karting-testing-set'), # Get from the environment
         description=f'The Animal Images to test, resized tot 254, 144',
         tags={'labels': os.environ.get('LABELS'), 'AI-Model': 'vgg19', 'Split size': str(TRAIN_TEST_SPLIT_FACTOR), 'type': 'testing', 'GIT-SHA': os.environ.get('GIT_SHA')},
         create_new_version=True)

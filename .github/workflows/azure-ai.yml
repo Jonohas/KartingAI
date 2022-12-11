@@ -86,8 +86,8 @@ on:
 env:
   CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
 
-  CLIENT_ID: cf21afce-62c6-4ffc-8c44-305bbcd608cc # Change this !
-  TENANT_ID: b1b5b747-fa79-442d-b8ab-870c8343c3c4 # Change this !
+  CLIENT_ID: 96f7f37a-faba-46fd-8bf3-c6239fb4f233 # Change this !
+  TENANT_ID: 4ded4bb1-6bff-42b3-aed7-6a36a503bf7a # Change this !
   WORKSPACE_NAME: mlops-jonasfaber-karting # Change this !
   RESOURCE_GROUP: NathanReserve # Change this !
   SUBSCRIPTION_ID: 7c50f9c3-289b-4ae0-a075-08784b3b9042 # Change this !
@@ -147,7 +147,7 @@ jobs:
         (needs.data-preparing.result == 'success' || needs.data-preparing.result == 'skipped') &&
         inputs.ai_training
       }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       INITIAL_LEARNING_RATE: 0.01

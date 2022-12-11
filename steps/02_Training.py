@@ -67,7 +67,6 @@ def prepareEnvironment(ws):
 
     # Create an Environment name for later use
     environment_name = os.environ.get('TRAINING_ENV_NAME')
-    conda_dependencies_path = os.environ.get('CONDA_DEPENDENCIES_PATH')
 
     # It's called CondaDependencies, but you can also use pip packages ;-)
     # This is the old way to do so
@@ -77,11 +76,19 @@ def prepareEnvironment(ws):
     #         pip_packages=['azureml-dataset-runtime[pandas,fuse]', 'azureml-defaults', 'tensorflow', 'scikit-learn', 'opencv-python-headless']
     #     )
 
-    # We can directly create an environment from a saved file
-    env = Environment.from_conda_specification(environment_name, file_path=conda_dependencies_path)
-    env.python.user_managed_dependencies = os.environ.get('TRAIN_ON_LOCAL') != 'true' # False when training on local machine, otherwise True.
+
+    # Create an Environment name for later use
+    environment_name = os.environ.get('TRAINING_ENV_NAME')
+    env = Environment(environment_name)
+
+    # It's called CondaDependencies, but you can also use pip packages ;-)
+    env.python.conda_dependencies = CondaDependencies.create(
+            # Using opencv-python-headless is interesting to skip the overhead of packages that we don't need in a headless-VM.
+            pip_packages=['azureml-dataset-runtime[pandas,fuse]', 'azureml-defaults', 'tensorflow', 'scikit-learn', 'opencv-python-headless']
+        )
     # Register environment to re-use later
     env.register(workspace = ws)
+
 
     return env
 
@@ -99,12 +106,13 @@ def prepareTraining(ws, env, compute_target) -> Tuple[Experiment, ScriptRunConfi
         # You can set these to .as_mount() when not training on local machines, but this should also work.
     '--training-folder', datasets[train_set_name].as_download('./data/train'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
     '--testing-folder', datasets[test_set_name].as_download('./data/test'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
-    '--max-epochs', MAX_EPOCHS,
+    '--epochs', MAX_EPOCHS,
     '--seed', SEED,
-    '--initial-learning-rate', INITIAL_LEARNING_RATE,
+    '--learning-rate', INITIAL_LEARNING_RATE,
     '--batch-size', BATCH_SIZE,
     '--patience', PATIENCE,
     '--model-name', MODEL_NAME]
+
 
     script_run_config = ScriptRunConfig(source_directory=script_folder,
                     script='train.py',
