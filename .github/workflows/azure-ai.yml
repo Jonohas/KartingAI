@@ -44,7 +44,7 @@ on:
         required: true
 
   workflow_dispatch:
-    branches: [ main, lessonsteps/** ]
+    branches: [ main, dev ]
     inputs:
       data_prep:
         description: 'Data preparing'
@@ -88,14 +88,14 @@ env:
 
   CLIENT_ID: cf21afce-62c6-4ffc-8c44-305bbcd608cc # Change this !
   TENANT_ID: b1b5b747-fa79-442d-b8ab-870c8343c3c4 # Change this !
-  WORKSPACE_NAME: MLOps-nathan-segers # Change this !
-  RESOURCE_GROUP: TETRA-Workshop-2406 # Change this !
-  SUBSCRIPTION_ID: 763622cd-d9e1-46f1-84c7-635df9708641 # Change this !
+  WORKSPACE_NAME: mlops-jonasfaber-karting # Change this !
+  RESOURCE_GROUP: NathanReserve # Change this !
+  SUBSCRIPTION_ID: 7c50f9c3-289b-4ae0-a075-08784b3b9042 # Change this !
 
-  ANIMALS: cats,dogs,pandas # As we have three classes, let's just defined them here. This way we can easily loop over them later.
-  TRAIN_SET_NAME: animals-training-set
-  TEST_SET_NAME: animals-testing-set
-  MODEL_NAME: animal-cnn
+  LABELS: finish,notfinish # As we have three classes, let's just defined them here. This way we can easily loop over them later.
+  TRAIN_SET_NAME: karting-training-set
+  TEST_SET_NAME: karting-testing-set
+  MODEL_NAME: karting-vgg19
 
   SCRIPT_FOLDER: scripts
 
@@ -154,10 +154,10 @@ jobs:
       MAX_EPOCHS: 2
       BATCH_SIZE: 32
       PATIENCE: 11
-      EXPERIMENT_NAME: animal-classification
+      EXPERIMENT_NAME: karting-classification
 
       ## Compute cluster parts
-      AML_COMPUTE_CLUSTER_NAME: nathan-cpu-cluster
+      AML_COMPUTE_CLUSTER_NAME: cpu-cluster
       AML_COMPUTE_CLUSTER_MIN_NODES: 1
       AML_COMPUTE_CLISTER_MAX_NODES: 4
       AML_COMPUTE_CLUSTER_SKU: STANDARD_D2_V2
@@ -184,7 +184,7 @@ jobs:
       - name: 'Run data prep script'
         id: aitraining
         run: |
-          python steps/02_AITraining.py
+          python steps/02_Training.py
 
 
   api-creation:
