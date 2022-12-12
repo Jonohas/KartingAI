@@ -79,7 +79,7 @@ def prepareEnvironment(ws):
 
     # Create an Environment name for later use
     environment_name = os.environ.get('TRAINING_ENV_NAME')
-    
+
     # env = Environment(environment_name)
 
     # # It's called CondaDependencies, but you can also use pip packages ;-)
@@ -136,12 +136,15 @@ def downloadAndRegisterModel(ws, run):
     datasets = Dataset.get_all(workspace=ws) # Get all the datasets
     test_set_name = os.environ.get('TEST_SET_NAME')
 
-    run.download_files(prefix=model_path)
-    run.register_model(MODEL_NAME,
-                model_path=model_path,
-                tags={'labels': ','.join(LABELS), 'AI-Model': 'vgg19', 'GIT_SHA': os.environ.get('GIT_SHA')},
-                description="Image classification on animals",
-                sample_input_dataset=datasets[test_set_name])
+    file_names = run.get_file_names(prefix=model_path)
+    print(file_names)
+
+    # run.download_files(prefix=model_path)
+    # run.register_model(MODEL_NAME,
+    #             model_path=model_path,
+    #             tags={'labels': ','.join(LABELS), 'AI-Model': 'vgg19', 'GIT_SHA': os.environ.get('GIT_SHA')},
+    #             description="Image classification on animals",
+    #             sample_input_dataset=datasets[test_set_name])
 
 def main():
     ws = connectWithAzure()
