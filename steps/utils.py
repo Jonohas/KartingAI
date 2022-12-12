@@ -25,8 +25,6 @@ def connectWithAzure() -> Workspace:
     resource_group = os.environ.get("RESOURCE_GROUP")
     subscription_id = os.environ.get("SUBSCRIPTION_ID")
 
-    print(tenant_id, client_id, client_secret, workspace_name, resource_group, subscription_id)
-
     return Workspace.get(
         name=workspace_name,
         subscription_id=subscription_id,

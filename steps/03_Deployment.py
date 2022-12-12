@@ -15,8 +15,7 @@ load_dotenv()
 LABELS = os.environ.get('LABELS').split(',')
 MODEL_NAME = os.environ.get('MODEL_NAME')
 LOCAL_DEPLOYMENT = os.environ.get('LOCAL_DEPLOYMENT')
-print(LOCAL_DEPLOYMENT)
-print(type(LOCAL_DEPLOYMENT))
+
 
 def prepareEnv(ws):
     print('Preparing environment')
@@ -33,8 +32,6 @@ def prepareDeployment(ws, environment):
     print('Preparing deployment')
     service_name = os.environ.get('SCORE_SERVICE_NAME')
     entry_script = os.path.join(os.environ.get('SCRIPT_FOLDER'), 'score.py')
-
-    print(service_name, entry_script, environment)
 
     inference_config = InferenceConfig(entry_script=entry_script, environment=environment)
     aci_config = AciWebservice.deploy_configuration(cpu_cores=1, memory_gb=1)
@@ -55,12 +52,16 @@ def downloadLatestModel(ws):
     local_model_path = os.environ.get('LOCAL_MODEL_PATH')
     model = Model(ws, name=MODEL_NAME)
     model.download(local_model_path, exist_ok=True)
-    return model
+    return
+
 
 def main():
     ws = connectWithAzure()
 
     downloadLatestModel(ws)
+    print('done downloading model')
+
+    os.close(0)
 
     # environment = prepareEnv(ws)
     # service = prepareDeployment(ws, environment)
