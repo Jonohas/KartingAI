@@ -277,14 +277,12 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
 
   api-deployment:
-
     needs: [docker-build-and-push]
 
     if: ${{
         always() &&
         (needs.docker-build-and-push.result == 'success') &&
-        inputs.local_deployment
-    }}
+        inputs.local_deployment }}
     runs-on: self-hosted
 
 
