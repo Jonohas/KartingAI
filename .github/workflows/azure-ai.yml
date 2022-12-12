@@ -147,7 +147,7 @@ jobs:
         (needs.data-preparing.result == 'success' || needs.data-preparing.result == 'skipped') &&
         inputs.ai_training
       }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     env:
       INITIAL_LEARNING_RATE: 0.01
