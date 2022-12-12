@@ -1,7 +1,7 @@
 # Importing the default packages for data processing and visualisation
 import numpy as np # Used to process our images in a data-format
 import cv2 # Process the images
-
+from utils import connectWithAzure
 
 import os
 from glob import glob
@@ -24,18 +24,14 @@ from azureml.data.datapath import DataPath
 
 ## Either get environment variables, or a fallback name, which is the second parameter.
 ## Currently, fill in the fallback values. Later on, we will make sure to work with Environment values. So we're already preparing for it in here!
-workspace_name = os.environ.get('WORKSPACE', 'mlops-jonasfaber-karting')
-subscription_id = os.environ.get('SUBSCRIPTION_ID', '7c50f9c3-289b-4ae0-a075-08784b3b9042')
-resource_group = os.environ.get('RESOURCE_GROUP', 'NathanReserve')
+
 
 LABELS = os.environ.get('LABELS', 'finish,notfinish').split(',')
 SEED = int(os.environ.get('RANDOM_SEED', '42'))
 TRAIN_TEST_SPLIT_FACTOR = float(os.environ.get('TRAIN_TEST_SPLIT_FACTOR', '0.2'))
 
 # Connect to workspace
-ws = Workspace.get(name=workspace_name,
-               subscription_id=subscription_id,
-               resource_group=resource_group)
+ws = connectWithAzure()
 
 
 def processAndUploadAnimalImages(datasets, data_path, processed_path, ws, label):
@@ -125,7 +121,7 @@ def trainTestSplitData(ws):
 
     training_dataset = training_dataset.register(ws,
         name=os.environ.get('TRAIN_SET_NAME', 'karting-training-set'), # Get from the environment
-        description=f'The Animal Images to train, resized tot 254, 144',
+        description=f'The Karting Images to train, resized tot 254, 144',
         tags={'labels': os.environ.get('LABELS'), 'AI-Model': 'vgg19', 'Split size': str(1 - TRAIN_TEST_SPLIT_FACTOR), 'type': 'training', 'GIT-SHA': os.environ.get('GIT_SHA')},
         create_new_version=True)
 
@@ -133,7 +129,7 @@ def trainTestSplitData(ws):
 
     testing_dataset = testing_dataset.register(ws,
         name=os.environ.get('TEST_SET_NAME', 'karting-testing-set'), # Get from the environment
-        description=f'The Animal Images to test, resized tot 254, 144',
+        description=f'The Karting Images to test, resized tot 254, 144',
         tags={'labels': os.environ.get('LABELS'), 'AI-Model': 'vgg19', 'Split size': str(TRAIN_TEST_SPLIT_FACTOR), 'type': 'testing', 'GIT-SHA': os.environ.get('GIT_SHA')},
         create_new_version=True)
 

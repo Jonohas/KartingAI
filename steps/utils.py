@@ -2,6 +2,8 @@ import os
 import numpy as np
 import json
 
+
+
 from azureml.core.authentication import ServicePrincipalAuthentication
 from azureml.core import Workspace
 
@@ -22,6 +24,8 @@ def connectWithAzure() -> Workspace:
     workspace_name = os.environ.get("WORKSPACE_NAME")
     resource_group = os.environ.get("RESOURCE_GROUP")
     subscription_id = os.environ.get("SUBSCRIPTION_ID")
+
+    print(tenant_id, client_id, client_secret, workspace_name, resource_group, subscription_id)
 
     return Workspace.get(
         name=workspace_name,
