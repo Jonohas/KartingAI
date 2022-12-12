@@ -15,4 +15,5 @@ jobs:
       split_images: false
       train_on_local: false
       local_deployment: true
+      download_model: false
     secrets: inherit

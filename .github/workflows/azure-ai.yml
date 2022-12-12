@@ -81,6 +81,11 @@ on:
         type: boolean
         default: false
         required: true
+      download_model:
+        description: 'Download the model from Azure ML'
+        type: boolean
+        default: false
+        required: true
     
 
 env:
@@ -218,6 +223,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 'Run deployment script'
+        if: inputs.download_model
         id: deployment
         run: |
           python steps/03_Deployment.py
