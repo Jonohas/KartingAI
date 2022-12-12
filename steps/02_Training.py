@@ -105,7 +105,7 @@ def prepareTraining(ws, env, compute_target) -> Tuple[Experiment, ScriptRunConfi
 
     args = [
         # You can set these to .as_mount() when not training on local machines, but this should also work.
-    '--training-folder', Dataset.get_by_name(name=train_set_name, workspace=ws).as_download('./data/train'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
+    '--training-folder', datasets[train_set_name].as_download('./data/train'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
     '--testing-folder', datasets[test_set_name].as_download('./data/test'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
     '--epochs', MAX_EPOCHS,
     '--seed', SEED,
