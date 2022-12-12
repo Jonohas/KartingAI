@@ -234,7 +234,6 @@ jobs:
     # This will run Always BUT only when the previous two jobs were successful or skipped && the local_deployment flag is set to true.
     if: ${{
         always() &&
-        (needs.api-creation.result == 'success' || needs.api-creation.result == 'skipped') &&
         inputs.local_deployment
       }}
     runs-on: ubuntu-latest
