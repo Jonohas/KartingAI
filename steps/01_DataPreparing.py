@@ -1,6 +1,5 @@
 # Importing the default packages for data processing and visualisation
 import numpy as np # Used to process our images in a data-format
-import matplotlib.pyplot as plt # visualise the images
 import cv2 # Process the images
 
 
@@ -21,8 +20,6 @@ import random
 from azureml.core import Workspace
 from azureml.core import Dataset
 from azureml.data.datapath import DataPath
-from azureml.core.compute import AmlCompute
-from azureml.core.compute import ComputeTarget
 
 
 ## Either get environment variables, or a fallback name, which is the second parameter.
@@ -40,8 +37,6 @@ ws = Workspace.get(name=workspace_name,
                subscription_id=subscription_id,
                resource_group=resource_group)
 
-
-import tempfile
 
 def processAndUploadAnimalImages(datasets, data_path, processed_path, ws, label):
     label_path = os.path.join(data_path, 'karting', label)
