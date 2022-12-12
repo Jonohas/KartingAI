@@ -136,7 +136,7 @@ def downloadAndRegisterModel(ws, run):
     datasets = Dataset.get_all(workspace=ws) # Get all the datasets
     test_set_name = os.environ.get('TEST_SET_NAME')
 
-    file_names = run.get_file_names(prefix=model_path)
+    file_names = run.get_file_names()
     print(file_names)
 
     # run.download_files(prefix=model_path)
