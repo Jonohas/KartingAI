@@ -147,7 +147,7 @@ jobs:
         (needs.data-preparing.result == 'success' || needs.data-preparing.result == 'skipped') &&
         inputs.ai_training
       }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     env:
       INITIAL_LEARNING_RATE: 0.01
@@ -166,7 +166,7 @@ jobs:
 
       ## Training environment
       CONDA_DEPENDENCIES_PATH: conda_dependencies.yml
-      TRAINING_ENV_NAME: animals-classification-env-training
+      TRAINING_ENV_NAME: karting-classification-env-training
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
