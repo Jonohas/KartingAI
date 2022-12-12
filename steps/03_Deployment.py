@@ -19,7 +19,7 @@ def downloadLatestModel(ws):
     print('Downloading latest model')
     local_model_path = os.environ.get('LOCAL_MODEL_PATH')
     model = Model(ws, name=MODEL_NAME)
-    downloaded_path = model.download(local_model_path, exist_ok=False)
+    downloaded_path = model.download(local_model_path, exist_ok=True)
     return downloaded_path
 
 def main():
