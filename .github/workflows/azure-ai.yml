@@ -42,6 +42,12 @@ on:
         type: boolean
         default: false
         required: true
+      download_model:
+        description: 'Download the model from Azure ML'
+        type: boolean
+        default: false
+        required: true
+    
 
   workflow_dispatch:
     branches: [ main, dev ]
