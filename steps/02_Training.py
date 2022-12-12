@@ -102,6 +102,8 @@ def prepareTraining(ws, env, compute_target) -> Tuple[Experiment, ScriptRunConfi
     datasets = Dataset.get_all(workspace=ws) # Get all the datasets
     exp = Experiment(workspace=ws, name=experiment_name) # Create a new experiment
 
+    print(datasets)
+
     args = [
         # You can set these to .as_mount() when not training on local machines, but this should also work.
     '--training-folder', datasets[train_set_name].as_download('./data/train'), # Currently, this will always take the last version. You can search a way to specify a version if you want to
