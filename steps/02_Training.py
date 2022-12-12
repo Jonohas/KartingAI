@@ -139,12 +139,17 @@ def downloadAndRegisterModel(ws, run):
     file_names = run.get_file_names()
     print(file_names)
 
+    for file_name in file_names:
+        if file_name.split('/')[0] != "outputs" and file_name.split('/')[1] != MODEL_NAME:
+            run.download_file(name=file_name, output_file_path=model_path)
+
+
     # run.download_files(prefix=model_path)
-    # run.register_model(MODEL_NAME,
-    #             model_path=model_path,
-    #             tags={'labels': ','.join(LABELS), 'AI-Model': 'vgg19', 'GIT_SHA': os.environ.get('GIT_SHA')},
-    #             description="Image classification on animals",
-    #             sample_input_dataset=datasets[test_set_name])
+    run.register_model(MODEL_NAME,
+                model_path=model_path,
+                tags={'labels': ','.join(LABELS), 'AI-Model': 'vgg19', 'GIT_SHA': os.environ.get('GIT_SHA')},
+                description="Image classification on animals",
+                sample_input_dataset=datasets[test_set_name])
 
 def main():
     ws = connectWithAzure()
