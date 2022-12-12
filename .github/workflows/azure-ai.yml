@@ -200,8 +200,8 @@ jobs:
 
     env:
       DEPLOYMENT_DEPENDENCIES: deployment_environment.yml
-      DEPLOYMENT_ENV_NAME: animals-classification-env-deployment
-      SCORE_SERVICE_NAME: animals-classification-svc
+      DEPLOYMENT_ENV_NAME: karting-classification-env-deployment
+      SCORE_SERVICE_NAME: karting-classification-svc
       LOCAL_MODEL_PATH: api/outputs
       LOCAL_DEPLOYMENT: ${{ inputs.local_deployment }}
 
@@ -251,7 +251,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/nathansegers/tetra-workshop
+            ghcr.io/jonohas/azureml-fastapi-karting
           # generate Docker tags based on the following events/attributes:
           # The GitHub Branch
           # The GitHub SHA
