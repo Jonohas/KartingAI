@@ -79,13 +79,16 @@ def prepareEnvironment(ws):
 
     # Create an Environment name for later use
     environment_name = os.environ.get('TRAINING_ENV_NAME')
-    env = Environment(environment_name)
+    
+    # env = Environment(environment_name)
 
-    # It's called CondaDependencies, but you can also use pip packages ;-)
-    env.python.conda_dependencies = CondaDependencies.create(
-            # Using opencv-python-headless is interesting to skip the overhead of packages that we don't need in a headless-VM.
-            pip_packages=['azureml-dataset-runtime[pandas,fuse]', 'azureml-defaults', 'tensorflow', 'scikit-learn', 'opencv-python-headless']
-        )
+    # # It's called CondaDependencies, but you can also use pip packages ;-)
+    # env.python.conda_dependencies = CondaDependencies.create(
+    #         # Using opencv-python-headless is interesting to skip the overhead of packages that we don't need in a headless-VM.
+    #         pip_packages=['azureml-dataset-runtime[pandas,fuse]', 'azureml-defaults', 'tensorflow', 'scikit-learn', 'opencv-python-headless']
+    #     )
+
+    env = Environment.from_conda_specification(environment_name, os.environ.get('CONDA_DEPENDENCIES_PATH'))
     # Register environment to re-use later
     env.register(workspace = ws)
 
@@ -101,8 +104,6 @@ def prepareTraining(ws, env, compute_target) -> Tuple[Experiment, ScriptRunConfi
 
     datasets = Dataset.get_all(workspace=ws) # Get all the datasets
     exp = Experiment(workspace=ws, name=experiment_name) # Create a new experiment
-
-    print(type(datasets), type(datasets[train_set_name]), )
 
     
 
