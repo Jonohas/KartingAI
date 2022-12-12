@@ -34,6 +34,8 @@ def prepareDeployment(ws, environment):
     service_name = os.environ.get('SCORE_SERVICE_NAME')
     entry_script = os.path.join(os.environ.get('SCRIPT_FOLDER'), 'score.py')
 
+    print(service_name, entry_script, environment)
+
     inference_config = InferenceConfig(entry_script=entry_script, environment=environment)
     aci_config = AciWebservice.deploy_configuration(cpu_cores=1, memory_gb=1)
 
@@ -58,13 +60,15 @@ def downloadLatestModel(ws):
 def main():
     ws = connectWithAzure()
 
-    environment = prepareEnv(ws)
-    service = prepareDeployment(ws, environment)
+    downloadLatestModel(ws)
 
-    print('Waiting for deployment to finish...')
-    service.wait_for_deployment(show_output=True)
+    # environment = prepareEnv(ws)
+    # service = prepareDeployment(ws, environment)
 
-    model = downloadLatestModel(ws)
+    # print('Waiting for deployment to finish...')
+    # service.wait_for_deployment(show_output=True)
+
+    # model = downloadLatestModel(ws)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,25 @@
+# kubernetes yaml file to quickly deploy a container
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: karting-ai
+  name: azureml-fastapi-karting
+  labels:
+    app: azureml-fastapi-karting
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azureml-fastapi-karting
+
+  template:
+    metadata:
+      labels:
+        app: azureml-fastapi-karting
+    spec:
+      containers:
+      - name: azureml-fastapi-karting-deployment
+        image: ghcr.io/jonohas/azureml-fastapi-karting:latest
+        ports:
+        - containerPort: 80
+          name: http

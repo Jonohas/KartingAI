@@ -1,0 +1,18 @@
+# create simple deployment yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: karting-ai
+  name: azureml-fastapi-karting
+  labels:
+    app: azureml-fastapi-karting
+spec:
+  ports: 
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: azureml-fastapi-karting
+
+
