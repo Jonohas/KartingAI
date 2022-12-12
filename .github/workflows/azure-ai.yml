@@ -151,7 +151,7 @@ jobs:
 
     env:
       INITIAL_LEARNING_RATE: 0.01
-      MAX_EPOCHS: 2
+      MAX_EPOCHS: 50
       BATCH_SIZE: 32
       PATIENCE: 11
       EXPERIMENT_NAME: karting-classification
