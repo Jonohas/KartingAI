@@ -102,7 +102,7 @@ def prepareTraining(ws, env, compute_target) -> Tuple[Experiment, ScriptRunConfi
     datasets = Dataset.get_all(workspace=ws) # Get all the datasets
     exp = Experiment(workspace=ws, name=experiment_name) # Create a new experiment
 
-    print(datasets)
+    print(datasets[train_set_name], train_set_name)
 
     args = [
         # You can set these to .as_mount() when not training on local machines, but this should also work.
