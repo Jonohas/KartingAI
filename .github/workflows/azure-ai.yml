@@ -95,7 +95,7 @@ env:
   LABELS: finish,notfinish # As we have three classes, let's just defined them here. This way we can easily loop over them later.
   TRAIN_SET_NAME: karting-training-set
   TEST_SET_NAME: karting-testing-set
-  MODEL_NAME: karting-vgg19
+  MODEL_NAME: karting-cnn-vgg
 
   SCRIPT_FOLDER: scripts
 
