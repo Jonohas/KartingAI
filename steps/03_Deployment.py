@@ -19,6 +19,7 @@ print(LOCAL_DEPLOYMENT)
 print(type(LOCAL_DEPLOYMENT))
 
 def prepareEnv(ws):
+    print('Preparing environment')
     environment_name = os.environ.get('DEPLOYMENT_ENV_NAME')
     conda_dependencies_path = os.environ.get('DEPLOYMENT_DEPENDENCIES')
 
@@ -29,7 +30,7 @@ def prepareEnv(ws):
     return env
 
 def prepareDeployment(ws, environment):
-
+    print('Preparing deployment')
     service_name = os.environ.get('SCORE_SERVICE_NAME')
     entry_script = os.path.join(os.environ.get('SCRIPT_FOLDER'), 'score.py')
 
@@ -48,6 +49,7 @@ def prepareDeployment(ws, environment):
     return service
 
 def downloadLatestModel(ws):
+    print('Downloading latest model')
     local_model_path = os.environ.get('LOCAL_MODEL_PATH')
     model = Model(ws, name=MODEL_NAME)
     model.download(local_model_path, exist_ok=True)
@@ -56,11 +58,13 @@ def downloadLatestModel(ws):
 def main():
     ws = connectWithAzure()
 
-    print(os.environ)
-
     environment = prepareEnv(ws)
     service = prepareDeployment(ws, environment)
+
+    print('Waiting for deployment to finish...')
     service.wait_for_deployment(show_output=True)
+
+    model = downloadLatestModel(ws)
 
 
 if __name__ == '__main__':
