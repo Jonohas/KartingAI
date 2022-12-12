@@ -43,7 +43,7 @@ def processAndUploadAnimalImages(datasets, data_path, processed_path, ws, label)
     os.makedirs(label_path, exist_ok=True)
 
     # Get the dataset name for this animal, then download to the directory
-    datasets[label].download(label_path, overwrite=True) # Overwriting means we don't have to delete if they already exist, in case something goes wrong.
+    datasets.get(label).download(label_path, overwrite=True) # Overwriting means we don't have to delete if they already exist, in case something goes wrong.
     print('Downloading all the images')
 
         # Get all the image paths with the `glob()` method.
