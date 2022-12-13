@@ -288,6 +288,12 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-kubernetes-artifact
+          path: kubernetes/ # or path/to/artifact
+
   api-deployment:
     needs: [docker-build-and-push]
 
@@ -300,15 +306,12 @@ jobs:
 
 
     steps:
+      - uses: actions/checkout@v2
+
       # small example if kubectl is working
       - name: kubectl version
         run: |
           kubectl version --client
-
-      - name: List directory
-        run: |
-          dir
-          ls
 
       - name: Deploy to Kubernetes
         run: |
