@@ -319,13 +319,11 @@ jobs:
           kubectl delete -f kubernetes/service.yaml -n karting-ai
 
       - name: Deploy to Kubernetes
+        if: success() || failure()
         run: |
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
 
-      - name: Start Port-Forward
-        run: |
-          kubectl port-forward svc/azureml-fastapi-karting 8888:80 -n karting-ai
 
 
 
