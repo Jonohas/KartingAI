@@ -320,7 +320,7 @@ jobs:
 
       - name: Start Port-Forward
         run: |
-          kubectl port-forward svc/azureml-fastapi-karting 8888:80
+          kubectl port-forward svc/azureml-fastapi-karting 8888:80 -n karting-ai
 
 
 
