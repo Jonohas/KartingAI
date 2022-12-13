@@ -313,11 +313,15 @@ jobs:
         run: |
           kubectl version --client
 
+      - name: Delete previous deployment and service
+        run: |
+          kubectl delete -f kubernetes/deployment.yaml -n karting-ai
+          kubectl delete -f kubernetes/service.yaml -n karting-ai
+
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
-          kubectl delete service azureml-fastapi-karting -n karting-ai
 
       - name: Start Port-Forward
         run: |
