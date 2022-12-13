@@ -305,10 +305,18 @@ jobs:
         run: |
           kubectl version --client
 
+      - name: List directory
+        run: |
+          dir
+
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
+
+      - name: Start Port-Forward
+        run: |
+          kubectl port-forward svc/azureml-fastapi-karting 8888:80
 
 
 
