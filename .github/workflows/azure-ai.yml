@@ -313,11 +313,6 @@ jobs:
         run: |
           kubectl version --client
 
-      - name: Delete previous deployment and service
-        run: |
-          kubectl delete -f kubernetes/deployment.yaml -n karting-ai
-          kubectl delete -f kubernetes/service.yaml -n karting-ai
-
       - name: Deploy to Kubernetes
         if: success() || failure()
         run: |
