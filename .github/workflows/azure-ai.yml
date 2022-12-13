@@ -308,6 +308,7 @@ jobs:
       - name: List directory
         run: |
           dir
+          ls
 
       - name: Deploy to Kubernetes
         run: |
